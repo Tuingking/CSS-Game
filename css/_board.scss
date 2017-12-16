@@ -1,0 +1,112 @@
+.game-area {
+    display: grid;
+    grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
+    grid-gap: 20px;
+    width: 80vw;
+    height: 80vh;
+    margin: 0 auto;
+
+    li {
+        background: dodgerblue;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+}
+
+.shield {
+    background: navy;
+    display: block;
+    width: 100%;
+    height: 50%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 4;
+}
+
+.character,
+.click-area {
+    animation: move 0.5s infinite alternate forwards;
+}
+
+@keyframes move {
+    0% {
+        transform: translateY(-25px)
+    }
+
+    50% {
+        transform: translateY(25px)
+    }
+}
+
+@for $i from 1 through 9 {
+    $speed: random()*2.5 + 's';
+
+    li:nth-child(#{$i}) {
+        .character,
+        .click-area {
+            animation-duration: #{$speed};
+        }
+    }
+}
+
+$game-length: 10s;
+
+.stopper {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 6;
+    background: cyan;
+    text-align: center;
+    font-size: 2em;
+    transform: translateY(-100vh);
+    animation: stopper 0.5s forwards;
+    animation-delay: $game-length;
+}
+
+@keyframes stopper {
+    from {
+        transform: translateY(-100vh);
+    }
+
+    to {
+        transform: translateY(0vh);
+    }
+}
+
+h2 {
+    &.score-text {
+        z-index: 10;
+        position: relative;
+        animation: score 0.5s forwards;
+        animation-delay: $game-length + 0.25s;
+    }
+}
+
+@keyframes score {
+    from {
+        transform: translateY(0vh);
+    }
+
+    to {
+        transform: translateY(-10vh);
+    }
+}
+
+.click-area:checked {
+    animation: none;
+    pointer-events: none;
+
+    // @extend .pixelized--heart;
+
+    + .character {
+        animation: none;
+        filter: grayscale(1);
+        // margin-top: -25px;
+    }
+}

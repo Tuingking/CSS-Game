@@ -1,0 +1,31 @@
+.click-area {
+    position: absolute;
+    display: block;
+    // outline: 1px solid;
+    width: 70px;
+    height: 50px;
+    z-index: 3;
+    top: -10px;
+    left: 6px;
+    cursor: -webkit-grab;
+
+    -webkit-appearance: none;
+
+    // &:checked {
+    //     background: dodgerblue;
+    // }
+}
+
+.game-area {
+    counter-reset: game;
+    // position: relative;
+}
+
+.click-area:checked {
+    counter-increment: game;
+    // background: green;
+}
+
+.score::after {
+    content: counter(game);
+}

@@ -1,0 +1,85 @@
+// Color map
+$colors: (
+    'o': transparent,
+    'r': red,
+    'b': black,
+);
+
+// Size of the pixels
+$size: 10px !default;
+
+$pixel-art: (
+    heart: (
+        (o o r r o r r o o)
+        (o r r r r r r r o)
+        (o r r r r r r r o)
+        (o o r r r r r o o)
+        (o o o r r r o o o)
+        (o o o o r o o o o)    
+    ),
+    phone: (
+        (b b b b b b b b b)
+        (b o o o o o o o b)
+        (b o o o o o o o b)
+        (b o o o o o o o b)
+        (b o o o o o o o b)
+        (b o o o o o o o b)
+        (b o o o o o o o b)
+        (b o o o o o o o b)
+        (b o o o o o o o b)
+        (b o o o o o o o b)
+        (b o o o o o o o b)
+        (b o o o o o o o b)
+        (b b b b b b b b b)
+        (b b b o o o b b b)
+        (b b b b b b b b b)
+    )
+);
+
+// function to read the matrix and pixelize it!
+@function pixelize($matrix, $size) {
+    $sh: '';
+    $rows: length($matrix);
+
+    @for $row from 1 through $rows {
+        $row-num: nth($matrix, $row);
+
+        @for $col from 1 through length($row-num) {
+            $dot: nth($row-num, $col);
+
+            $sh: $sh + ($size*$col) + ' ' + ($size*$row) + ' ' + map-get($colors, $dot);
+
+            @if not ($col == length($row-num) and $row == $rows) {
+                $sh: $sh + ',';
+            }
+        }
+    }
+
+    @return unquote($sh);
+};
+
+// Mixin to style each item
+@mixin style-item($matrix, $size) {
+
+}
+
+.pixelized--heart {
+    // outline: 1px solid;
+    position: relative;
+    height: $size*length(map-get($pixel-art, heart));
+    width: $size*length(nth(map-get($pixel-art, heart), 1));
+
+    &::after {
+        top: -$size;
+        left: -$size;
+        height: $size;
+        width: $size;
+        content: '';
+        position: absolute;
+        box-shadow: pixelize(map-get($map: $pixel-art, $key: heart), $size);
+    }
+}
+
+.heart-wrapper {
+    position: relative;
+}
